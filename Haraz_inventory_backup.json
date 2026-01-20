@@ -1,0 +1,120 @@
+{
+  "inventory": [
+    {
+      "id": 1,
+      "name": "Whole Milk",
+      "category": "Dairy",
+      "stock": 94,
+      "unit": "Liters",
+      "min": 30,
+      "supplier": "Local Dairy",
+      "link": "https://alfatah.pk/products/nestle-milkpak-milk-full-cream",
+      "usageDays": 3,
+      "price": 1.5
+    },
+    {
+      "id": 2,
+      "name": "Espresso Beans",
+      "category": "Coffee Beans",
+      "stock": 200,
+      "unit": "kg",
+      "min": 8,
+      "supplier": "Global Roasters",
+      "link": "https://alfatah.pk/products/indocafe-coffee-original-blend-50-gm",
+      "usageDays": 7,
+      "price": 35
+    },
+    {
+      "id": 3,
+      "name": "Sugar",
+      "category": "Packaging",
+      "stock": 300,
+      "unit": "kg",
+      "min": 20,
+      "supplier": "Wholesale Mart",
+      "link": "https://alfatah.pk/products/local-desi-sugar",
+      "usageDays": 14,
+      "price": 1.2
+    },
+    {
+      "id": 1768722180986,
+      "name": "Haraz Pistachio Sauce",
+      "category": "Syrups",
+      "stock": 16,
+      "unit": "pcs",
+      "min": 8,
+      "usageDays": 15,
+      "supplier": "Haraz",
+      "price": 0,
+      "link": "https://harazcoffeehouse.com/?srsltid=AfmBOoqk_gyoCIXS44ypmIAAIS1A4l9F91UebBZNu1hGDSUumiiyMXGh"
+    }
+  ],
+  "history": [
+    {
+      "id": 1768656072144,
+      "date": "2026-01-17",
+      "receivedDate": "2026-01-17",
+      "item": "Whole Milk",
+      "qty": 30,
+      "price": 1.5,
+      "supplier": "Local Dairy"
+    },
+    {
+      "id": 1768585497562,
+      "date": "2026-01-16",
+      "receivedDate": "2026-01-17",
+      "item": "Espresso Beans",
+      "qty": 11,
+      "price": 35,
+      "supplier": "Global Roasters"
+    },
+    {
+      "id": 1768618536592,
+      "date": "2026-01-17",
+      "receivedDate": "2026-01-17",
+      "item": "Espresso Beans",
+      "qty": 11,
+      "price": 35,
+      "supplier": "Global Roasters"
+    },
+    {
+      "id": 1768585305883,
+      "date": "2026-01-16",
+      "receivedDate": "2026-01-16",
+      "item": "Whole Milk",
+      "qty": 32,
+      "price": 1.5,
+      "supplier": "Local Dairy"
+    },
+    {
+      "id": 1768583761770,
+      "date": "2026-01-16",
+      "item": "Whole Milk",
+      "qty": 36,
+      "price": 1.5,
+      "supplier": "Local Dairy"
+    },
+    {
+      "id": 101,
+      "date": "2026-01-10",
+      "item": "Whole Milk",
+      "qty": 12,
+      "price": 1.5,
+      "supplier": "Local Dairy"
+    },
+    {
+      "id": 102,
+      "date": "2026-01-12",
+      "item": "Espresso Beans",
+      "qty": 5,
+      "price": 35,
+      "supplier": "Global Roasters"
+    }
+  ],
+  "settings": {
+    "budget": 1000,
+    "spend": 1110,
+    "threshold": 20,
+    "email": "admin@harazcoffee.com"
+  }
+}
