@@ -936,6 +936,9 @@
                     <input type="text" placeholder="Search items..." onkeyup="filterInventory(this.value)">
                 </div>
                 <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-outline" onclick="openModal('categoryModal')">
+                        <i data-lucide="layers"></i> Category Management
+                    </button>
                     <button class="btn btn-outline" onclick="exportToExcel()">
                         <i data-lucide="file-spreadsheet"></i> Export to Excel
                     </button>
@@ -1077,18 +1080,6 @@
                     </button>
                 </div>
             </div>
-
-            <div class="card" style="max-width: 800px; height: auto; margin-top: 1.5rem;">
-                <h3 style="margin-bottom: 1.5rem;">Category Management</h3>
-                <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 1.5rem;">
-                    <input type="text" id="new-category-input" placeholder="New category name..." style="flex: 1;">
-                    <button class="btn btn-primary" onclick="addCategory()">Add Category</button>
-                </div>
-                <div id="category-list"
-                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
-                    <!-- Categories will be injected here -->
-                </div>
-            </div>
         </div>
 
     </main>
@@ -1162,6 +1153,25 @@
                 </div>
                 <button type="submit" class="btn btn-primary" style="width: 100%;">Save Item</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal for Category Management -->
+    <div id="categoryModal" class="modal-overlay">
+        <div class="modal" style="max-width: 600px;">
+            <div class="modal-header">
+                <h2>Manage Categories</h2>
+                <button onclick="closeModal('categoryModal')"
+                    style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="x"></i></button>
+            </div>
+            <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 1.5rem; margin-top: 1rem;">
+                <input type="text" id="new-category-input" placeholder="New category name..." style="flex: 1;">
+                <button class="btn btn-primary" onclick="addCategory()">Add</button>
+            </div>
+            <div id="category-list"
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                <!-- Categories will be injected here -->
+            </div>
         </div>
     </div>
 
@@ -1408,7 +1418,7 @@
                                 <p style="font-size: 0.9rem; font-weight: 600;">${i.name} Critical!</p>
                                 <p style="font-size: 0.75rem; color: var(--text-dim);">Balance: ${i.stock} ${i.unit}</p>
                             </div>
-                            <button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.7rem;" onclick="showSection('procurement', document.querySelector('.nav-item:nth-child(4)'))">Order</button>
+                            <button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.7rem;" onclick="showSection('procurement', document.querySelector('.nav-item:nth-child(4)')); generateDraftOrders();">Order</button>
                         </div>
                     `;
                 } else {
@@ -1437,31 +1447,33 @@
 
             const filteredItems = inventory.filter(i => i.name.toLowerCase().includes(filterText.toLowerCase()));
 
-            // Using for...of with await to preserve item order
-            for (const item of filteredItems) {
-                const isLow = item.stock <= item.min;
+            // Optimization: Fetch all images in parallel
+            const itemsWithImages = await Promise.all(filteredItems.map(async (item) => {
                 const imgData = await getImage(item.id);
-                const rowId = `item-row-${item.id}`;
+                return { ...item, imgData };
+            }));
 
+            for (const item of itemsWithImages) {
+                const isLow = item.stock <= item.min;
                 const tr = document.createElement('tr');
                 tr.className = 'item-row';
-                tr.id = rowId;
+                tr.id = `item-row-${item.id}`;
                 tr.innerHTML = `
                         <td>
                             <div style="width: 40px; height: 40px; background: var(--glass-bg); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);">
-                                ${imgData ? `<img src="${imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 16px; color: var(--text-dim);"></i>'}
+                                ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 16px; color: var(--text-dim);"></i>'}
                             </div>
                         </td>
                         <td style="font-weight: 600;">${item.name}</td>
                         <td style="color: var(--text-dim);">${item.category}</td>
                         <td>
                             <div class="counter">
-                                <button class="counter-btn" onclick="adjustStock(${item.id}, -1)">-</button>
+                                <button class="counter-btn" onclick="adjustStock('${item.id}', -1)">-</button>
                                 <input type="number" step="0.01" 
                                     style="width: 60px; background: transparent; border: 1px solid var(--glass-border); color: white; text-align: center; font-weight: bold; border-radius: 4px;" 
                                     value="${item.stock}" 
-                                    onchange="updateItemStock(${item.id}, this.value)">
-                                <button class="counter-btn" onclick="adjustStock(${item.id}, 1)">+</button>
+                                    onchange="updateItemStock('${item.id}', this.value)">
+                                <button class="counter-btn" onclick="adjustStock('${item.id}', 1)">+</button>
                             </div>
                         </td>
                         <td>${item.unit}</td>
@@ -1470,10 +1482,10 @@
                         </td>
                         <td>
                             <div style="display: flex; gap: 8px;">
-                                <button class="btn btn-outline" style="padding: 6px;" onclick="editItem(${item.id})">
+                                <button class="btn btn-outline" style="padding: 6px;" onclick="editItem('${item.id}')">
                                     <i data-lucide="edit-2" style="width: 14px;"></i>
                                 </button>
-                                <button class="btn btn-outline" style="padding: 6px; color: var(--danger); border-color: var(--danger);" onclick="deleteItem(${item.id})">
+                                <button class="btn btn-outline" style="padding: 6px; color: var(--danger); border-color: var(--danger);" onclick="deleteItem('${item.id}')">
                                     <i data-lucide="trash-2" style="width: 14px;"></i>
                                 </button>
                             </div>
@@ -1485,13 +1497,15 @@
         }
 
         function getStockStatus(item) {
-            if (item.stock <= item.min) return { color: 'var(--danger)', label: 'Critical' };
-            if (item.stock <= item.min * 1.5) return { color: 'var(--warning)', label: 'Watch' };
+            const stock = parseFloat(item.stock) || 0;
+            const min = parseFloat(item.min) || 0;
+            if (stock <= min) return { color: 'var(--danger)', label: 'Critical' };
+            if (stock <= min * 1.5) return { color: 'var(--warning)', label: 'Watch' };
             return { color: 'var(--success)', label: 'Healthy' };
         }
 
         function adjustStock(id, amount) {
-            const item = inventory.find(i => i.id === id);
+            const item = inventory.find(i => i.id == id);
             if (item) {
                 item.stock = parseFloat((item.stock + amount).toFixed(2));
                 if (item.stock < 0) item.stock = 0;
@@ -1501,7 +1515,7 @@
         }
 
         function updateItemStock(id, val) {
-            const item = inventory.find(i => i.id === id);
+            const item = inventory.find(i => i.id == id);
             if (item) {
                 item.stock = parseFloat(parseFloat(val).toFixed(2)) || 0;
                 saveData();
@@ -1536,8 +1550,8 @@
             inputs.forEach(input => {
                 const val = parseFloat(input.value);
                 if (!isNaN(val)) {
-                    const id = parseInt(input.dataset.id);
-                    const item = inventory.find(i => i.id === id);
+                    const id = input.dataset.id;
+                    const item = inventory.find(i => i.id == id);
                     if (item) {
                         item.stock = val;
                         count++;
@@ -1560,7 +1574,7 @@
             container.innerHTML = '';
 
             const lowItems = inventory.filter(item => {
-                const isAlreadyOrdered = orders.some(o => o.itemId === item.id);
+                const isAlreadyOrdered = orders.some(o => o.itemId == item.id);
                 return item.stock <= item.min && !isAlreadyOrdered;
             });
 
@@ -1600,7 +1614,7 @@
         }
 
         function completePurchase(id, defaultQty, cost) {
-            const item = inventory.find(i => i.id === id);
+            const item = inventory.find(i => i.id == id);
 
             const userQty = prompt(`Enter quantity to order for ${item.name} (${item.unit}):`, defaultQty);
             if (userQty === null) return; // Cancelled
@@ -1634,11 +1648,11 @@
         }
 
         function receiveOrder(orderId) {
-            const orderIndex = orders.findIndex(o => o.id === orderId);
+            const orderIndex = orders.findIndex(o => o.id == orderId);
             if (orderIndex === -1) return;
 
             const order = orders[orderIndex];
-            const item = inventory.find(i => i.id === order.itemId);
+            const item = inventory.find(i => i.id == order.itemId);
 
             if (confirm(`Mark shipment for ${order.itemName} (${order.qty} ${order.unit}) as received? Stock will be updated.`)) {
                 if (item) {
@@ -1862,19 +1876,22 @@
             const heatmap = document.getElementById('stock-heatmap');
             if (heatmap) {
                 heatmap.innerHTML = '';
-                // Self-executing async to avoid blocking main thread, using for...of for consistency
                 (async () => {
-                    for (const i of inventory) {
-                        const status = getStockStatus(i);
+                    // Optimized: Fetch all heatmap images in parallel
+                    const itemsWithImages = await Promise.all(inventory.map(async (i) => {
                         const imgData = await getImage(i.id);
+                        return { ...i, imgData };
+                    }));
 
+                    for (const i of itemsWithImages) {
+                        const status = getStockStatus(i);
                         const cell = document.createElement('div');
                         cell.className = 'heatmap-cell';
                         cell.style.background = status.color;
                         cell.style.border = `1px solid ${status.color}`;
                         cell.title = `${i.name}: ${i.stock} ${i.unit}`;
                         cell.innerHTML = `
-                            ${imgData ? `<img src="${imgData}" style="width: 20px; height: 20px; border-radius: 4px; object-fit: cover; margin-bottom: 2px;">` : ''}
+                            ${i.imgData ? `<img src="${i.imgData}" style="width: 20px; height: 20px; border-radius: 4px; object-fit: cover; margin-bottom: 2px;">` : ''}
                             <div style="font-size: 0.5rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${i.name}</div>
                             <div style="font-size: 0.7rem;">${Math.round(i.stock)}</div>
                         `;
@@ -1911,10 +1928,15 @@
                 const item = document.createElement('div');
                 item.style = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border);";
                 item.innerHTML = `
-                    <span>${cat}</span>
-                    <button class="btn btn-outline" style="padding: 4px; color: var(--danger); border-color: transparent;" onclick="deleteCategory('${cat}')">
-                        <i data-lucide="x" style="width: 14px;"></i>
-                    </button>
+                    <span style="font-weight: 500;">${cat}</span>
+                    <div style="display: flex; gap: 5px;">
+                        <button class="btn btn-outline" style="padding: 4px; border-color: transparent;" onclick="editCategory('${cat}')">
+                            <i data-lucide="edit-2" style="width: 14px;"></i>
+                        </button>
+                        <button class="btn btn-outline" style="padding: 4px; color: var(--danger); border-color: transparent;" onclick="deleteCategory('${cat}')">
+                            <i data-lucide="x" style="width: 14px;"></i>
+                        </button>
+                    </div>
                 `;
                 container.appendChild(item);
             });
@@ -1930,6 +1952,35 @@
                 saveData();
                 renderCategorySettings();
                 showToast(`Category "${val}" added.`);
+            }
+        }
+
+        function editCategory(oldCat) {
+            const newCat = prompt("Rename category:", oldCat);
+            if (newCat && newCat.trim() !== "" && newCat !== oldCat) {
+                const trimmedNewCat = newCat.trim();
+
+                if (settings.categories.includes(trimmedNewCat)) {
+                    alert("A category with this name already exists.");
+                    return;
+                }
+
+                // Update settings
+                const index = settings.categories.indexOf(oldCat);
+                if (index !== -1) {
+                    settings.categories[index] = trimmedNewCat;
+                }
+
+                // Update all items in inventory that use this category
+                inventory.forEach(item => {
+                    if (item.category === oldCat) {
+                        item.category = trimmedNewCat;
+                    }
+                });
+
+                saveData();
+                renderCategorySettings();
+                showToast(`Category renamed to "${trimmedNewCat}". Items updated.`);
             }
         }
 
@@ -1975,8 +2026,12 @@
                 syncSettingsUI();
             }
 
+            if (id === 'categoryModal') {
+                renderCategorySettings();
+            }
+
             if (itemId) {
-                const item = inventory.find(i => i.id === itemId);
+                const item = inventory.find(i => i.id == itemId);
                 document.getElementById('modal-title').innerText = "Edit Item";
                 document.getElementById('edit-item-id').value = item.id;
                 document.getElementById('new-item-name').value = item.name;
@@ -2009,11 +2064,11 @@
         }
 
         async function deleteItem(id) {
-            const item = inventory.find(i => i.id === id);
+            const item = inventory.find(i => i.id == id);
             if (!item) return;
 
             if (confirm(`Are you sure you want to delete "${item.name}"? This action cannot be undone.`)) {
-                const index = inventory.findIndex(i => i.id === id);
+                const index = inventory.findIndex(i => i.id == id);
                 inventory.splice(index, 1);
                 await deleteImage(id); // Remove local image
                 saveData();
