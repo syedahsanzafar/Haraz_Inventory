@@ -4,7 +4,7 @@
       "id": "100",
       "name": "1833_PISTACHE_1L",
       "category": "Uncategorized",
-      "stock": 0,
+      "stock": 10,
       "unit": "pcs",
       "min": 5,
       "usageDays": 7,
@@ -715,7 +715,17 @@
       "link": ""
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "id": 1769092293295,
+      "date": "2026-01-22",
+      "receivedDate": "2026-01-22",
+      "item": "1833_PISTACHE_1L",
+      "qty": 10,
+      "price": 0,
+      "supplier": "-"
+    }
+  ],
   "settings": {
     "budget": 1000,
     "spend": 0,
