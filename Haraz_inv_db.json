@@ -9,7 +9,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1833_PISTACHE_1L.png",
       "link": ""
@@ -23,9 +23,9 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
-      "imagePath": "1883 Maison Routin France Blackberry Syrup.png",
+      "imagePath": "1883_maison_routin_france_blackberry_syrup.jpg",
       "link": ""
     },
     {
@@ -37,7 +37,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Coconut Syrup.png",
       "link": ""
@@ -51,7 +51,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France DragonFruit Syrup.png",
       "link": ""
@@ -65,7 +65,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Hazelnut Syrup.png",
       "link": ""
@@ -79,7 +79,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Lavender Syrup.png",
       "link": ""
@@ -93,7 +93,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Mango Syrup.png",
       "link": ""
@@ -107,7 +107,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Peach Syrup.png",
       "link": ""
@@ -121,7 +121,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Pomegranate Syrup.png",
       "link": ""
@@ -135,7 +135,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Salted Caramel Syrup.png",
       "link": ""
@@ -149,7 +149,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Strawberry Syrup.png",
       "link": ""
@@ -163,7 +163,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Sugar Cane Syrup.png",
       "link": ""
@@ -177,7 +177,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "1883 Maison Routin France Vanilla Syrup.png",
       "link": ""
@@ -191,7 +191,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "3LB Carrier + Bag + Dispenser.png",
       "link": ""
@@ -205,7 +205,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "4 Piece Cuttlery Set.png",
       "link": ""
@@ -219,7 +219,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Black 8oz Lids.png",
       "link": ""
@@ -233,7 +233,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Black Lids 10-24oz Cup.png",
       "link": ""
@@ -247,7 +247,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Black Triangle Box.png",
       "link": ""
@@ -261,7 +261,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Chobani Oatmilk.png",
       "link": ""
@@ -275,7 +275,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Clear Pet Container 6x6.png",
       "link": ""
@@ -289,7 +289,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Duro White Paper Croissant bags.png",
       "link": ""
@@ -303,7 +303,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Extra Large Gloves.png",
       "link": ""
@@ -317,7 +317,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Grown Right Organic Strawberry Lemonade.png",
       "link": ""
@@ -331,7 +331,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Handle Shopping Bags medium 41x27.png",
       "link": ""
@@ -345,7 +345,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz 16oz Lids.png",
       "link": ""
@@ -359,7 +359,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz 20oz Pet Cups.png",
       "link": ""
@@ -373,7 +373,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz 6x6 Pet container.png",
       "link": ""
@@ -387,7 +387,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Cup Jackets for 10-24oz cup.png",
       "link": ""
@@ -401,7 +401,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Honey Comb Bread Paper Box.png",
       "link": ""
@@ -415,7 +415,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Insulated Hot Cup 8oz.png",
       "link": ""
@@ -429,7 +429,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Insulated Hot Cups 16oz.png",
       "link": ""
@@ -443,7 +443,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Pet Cup 16oz.png",
       "link": ""
@@ -457,7 +457,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Pet Plate 9x6.png",
       "link": ""
@@ -471,7 +471,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz Pistachio Sauce.png",
       "link": ""
@@ -485,7 +485,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Haraz White Chocolate Sauce.png",
       "link": ""
@@ -499,7 +499,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Hollander Classic Chocolate Cafe sauce.png",
       "link": ""
@@ -513,7 +513,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Hollander Dutched Caramel cafe sauce.png",
       "link": ""
@@ -527,7 +527,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Hollander White Chocolate sauce.png",
       "link": ""
@@ -541,7 +541,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "images (6).png",
       "link": ""
@@ -555,7 +555,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "insulated cup.png",
       "link": ""
@@ -569,7 +569,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Karat Forks.png",
       "link": ""
@@ -583,7 +583,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Karat Jumbo Straws.png",
       "link": ""
@@ -597,7 +597,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Karat Knives.png",
       "link": ""
@@ -611,7 +611,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Karat Wooden Coffee Stirrer.png",
       "link": ""
@@ -625,7 +625,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Kirkland Organic Lemonade.png",
       "link": ""
@@ -639,7 +639,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Lids 20oz.png",
       "link": ""
@@ -653,7 +653,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Pacific Almond Milk.png",
       "link": ""
@@ -667,7 +667,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Paper Bags.jpg",
       "link": ""
@@ -681,7 +681,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Paper Cup Holder.png",
       "link": ""
@@ -695,7 +695,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Pet Hinged Container.png",
       "link": ""
@@ -709,7 +709,7 @@
       "min": 5,
       "usageDays": 7,
       "supplier": "-",
-      "price": 0.0,
+      "price": 0,
       "packSize": 1,
       "imagePath": "Plastic Sauce Cup 1.5 oz.png",
       "link": ""
