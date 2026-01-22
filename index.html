@@ -498,6 +498,11 @@
             outline: none;
         }
 
+        select option {
+            background: #1a1a1a;
+            color: white;
+        }
+
         .form-group select option {
             background: #1a1a1a;
             color: white;
@@ -929,6 +934,48 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--accent);
         }
+
+        /* Image Preview Modal */
+        .image-preview-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .image-preview-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 12px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .image-preview-overlay.active {
+            display: flex;
+        }
+
+        .image-preview-overlay.active img {
+            transform: scale(1);
+        }
+
+        .img-cell {
+            cursor: zoom-in;
+            transition: transform 0.2s ease;
+        }
+
+        .img-cell:hover {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 
@@ -1184,15 +1231,25 @@
         <!-- STOCK TAKE SECTION -->
         <div id="stocktake" class="section animated">
             <div class="card" style="margin-bottom: 2rem; height: auto;">
-                <div style="display: flex; justify-content: space-between; align-items: start;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
                     <div>
-                        <h2>Physical Stock Audit</h2>
+                        <h2 style="margin: 0;">Physical Stock Audit</h2>
                         <p style="color: var(--text-dim); margin-top: 5px;">Enter the actual count found on the shelf.
                         </p>
                     </div>
-                    <button class="btn btn-primary" onclick="processStockTake()">
-                        <i data-lucide="check-circle"></i> Save Audit
-                    </button>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <select id="stock-audit-sort" onchange="renderStockTake()"
+                            style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; outline: none;">
+                            <option value="category">Sort by Category</option>
+                            <option value="name">Sort by Name</option>
+                            <option value="min">Sort by Min Qty</option>
+                            <option value="id">Sort by ID</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="processStockTake()">
+                            <i data-lucide="check-circle"></i> Save Audit
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -1203,11 +1260,20 @@
 
         <!-- PROCUREMENT SECTION -->
         <div id="procurement" class="section animated">
-            <div class="inventory-controls">
+            <div class="inventory-controls" style="justify-content: space-between;">
                 <h2>Smart Procurement</h2>
-                <button class="btn btn-primary" onclick="generateDraftOrders()">
-                    <i data-lucide="refresh-cw"></i> Refresh Drafts
-                </button>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <select id="procurement-sort" onchange="generateDraftOrders()"
+                        style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 10px; padding: 8px 12px; font-size: 0.85rem; outline: none;">
+                        <option value="min">Sort by Min Qty</option>
+                        <option value="name">Sort by Name</option>
+                        <option value="category">Sort by Category</option>
+                        <option value="id">Sort by ID</option>
+                    </select>
+                    <button class="btn btn-primary" onclick="generateDraftOrders()">
+                        <i data-lucide="refresh-cw"></i> Refresh Drafts
+                    </button>
+                </div>
             </div>
 
             <div id="draft-orders-container" class="grid-5-cols" style="margin-bottom: 2rem;">
@@ -1410,6 +1476,14 @@
     <!-- Notification Toast -->
     <div id="notification-toast"></div>
 
+    <!-- Image Preview Overlay -->
+    <div id="image-preview-overlay" class="image-preview-overlay" onclick="this.classList.remove('active')">
+        <img id="preview-image-large" src="" alt="Enlarged view">
+        <div style="position: absolute; top: 20px; right: 20px; color: white;">
+            <i data-lucide="x" style="width: 32px; height: 32px;"></i>
+        </div>
+    </div>
+
     <script>
         // --- Image Storage (IndexedDB) ---
         const DB_NAME = "HarazImagesDB";
@@ -1443,21 +1517,44 @@
         };
 
         const getImage = (id, filename = null) => {
-            return new Promise((resolve) => {
+            return new Promise(async (resolve) => {
                 const tx = db.transaction(STORE_NAME, "readonly");
                 const store = tx.objectStore(STORE_NAME);
                 const request = store.get(id.toString());
-                request.onsuccess = () => {
+                request.onsuccess = async () => {
                     if (request.result) {
                         resolve(request.result);
                     } else if (filename) {
-                        // Fallback to GitHub Hosted Image
-                        resolve(`./product_images/${filename}`);
+                        // Fallback: Fetch from GitHub and Cache locally
+                        try {
+                            const token = localStorage.getItem('haraz_github_token');
+                            const url = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/product_images/${encodeURIComponent(filename)}`;
+
+                            const headers = { 'Accept': 'application/vnd.github.v3.raw' };
+                            if (token) headers['Authorization'] = `token ${token}`;
+
+                            const response = await fetch(url, { headers });
+                            if (response.ok) {
+                                const blob = await response.blob();
+                                const reader = new FileReader();
+                                reader.onloadend = async () => {
+                                    const base64data = reader.result;
+                                    await storeImage(id, base64data); // Cache it!
+                                    resolve(base64data);
+                                };
+                                reader.readAsDataURL(blob);
+                            } else {
+                                resolve(null);
+                            }
+                        } catch (err) {
+                            console.error("Image Fetch Error:", err);
+                            resolve(null);
+                        }
                     } else {
                         resolve(null);
                     }
                 };
-                request.onerror = () => resolve(filename ? `./product_images/${filename}` : null);
+                request.onerror = () => resolve(null);
             });
         };
 
@@ -1754,7 +1851,8 @@
                 tr.id = `item-row-${item.id}`;
                 tr.innerHTML = `
                         <td>
-                            <div style="width: 40px; height: 40px; background: var(--glass-bg); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);">
+                            <div class="img-cell" style="width: 40px; height: 40px; background: var(--glass-bg); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);" 
+                                 onclick="openImagePreview('${item.imgData || ''}', '${item.name}')">
                                 ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 16px; color: var(--text-dim);"></i>'}
                             </div>
                         </td>
@@ -1849,9 +1947,19 @@
         async function renderStockTake() {
             const grid = document.getElementById('stock-take-grid');
             grid.innerHTML = '';
+            const sortBy = document.getElementById('stock-audit-sort') ? document.getElementById('stock-audit-sort').value : 'category';
+
+            let sortedInventory = [...inventory];
+            sortedInventory.sort((a, b) => {
+                if (sortBy === 'name') return a.name.localeCompare(b.name);
+                if (sortBy === 'id') return String(a.id).localeCompare(String(b.id));
+                if (sortBy === 'min') return (a.min || 0) - (b.min || 0);
+                if (sortBy === 'category') return (a.category || '').localeCompare(b.category || '');
+                return 0;
+            });
 
             // Optimization: Fetch all images in parallel
-            const itemsWithImages = await Promise.all(inventory.map(async (item) => {
+            const itemsWithImages = await Promise.all(sortedInventory.map(async (item) => {
                 const imgData = await getImage(item.id, item.imagePath);
                 return { ...item, imgData };
             }));
@@ -1952,8 +2060,9 @@
         async function generateDraftOrders() {
             const container = document.getElementById('draft-orders-container');
             container.innerHTML = '';
+            const sortBy = document.getElementById('procurement-sort') ? document.getElementById('procurement-sort').value : 'min';
 
-            const lowItems = inventory.filter(item => {
+            let lowItems = inventory.filter(item => {
                 const isAlreadyOrdered = orders.some(o => o.itemId == item.id);
                 return item.stock <= item.min && !isAlreadyOrdered;
             });
@@ -1962,6 +2071,15 @@
                 container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 3rem;">No orders required. All stock levels are sufficient.</p>';
                 return;
             }
+
+            // Sort lowItems
+            lowItems.sort((a, b) => {
+                if (sortBy === 'name') return a.name.localeCompare(b.name);
+                if (sortBy === 'id') return String(a.id).localeCompare(String(b.id));
+                if (sortBy === 'min') return (a.min || 0) - (b.min || 0);
+                if (sortBy === 'category') return (a.category || '').localeCompare(b.category || '');
+                return 0;
+            });
 
             // Optimization: Fetch all images in parallel
             const itemsWithImages = await Promise.all(lowItems.map(async (item) => {
@@ -2609,6 +2727,12 @@
                 link: document.getElementById('new-item-link').value || ''
             };
 
+            // If a new image was just captured/selected, auto-generate filename
+            if (currentProcessedImage) {
+                const safeName = name.replace(/[^a-z0-9_\-]/gi, '_').toLowerCase();
+                itemData.imagePath = `${safeName}.jpg`;
+            }
+
             let finalId = editId;
             if (editId) {
                 const index = inventory.findIndex(i => String(i.id) === String(editId));
@@ -2627,6 +2751,8 @@
 
             if (currentProcessedImage) {
                 await storeImage(finalId, currentProcessedImage);
+                // Upload to GitHub in background
+                pushImageToCloud(itemData.imagePath, currentProcessedImage);
             }
 
             saveData();
@@ -2643,10 +2769,21 @@
             setTimeout(() => toast.style.display = 'none', 3000);
         }
 
+        function openImagePreview(src, name) {
+            if (!src) return;
+            const overlay = document.getElementById('image-preview-overlay');
+            const img = document.getElementById('preview-image-large');
+            img.src = src;
+            overlay.classList.add('active');
+
+            // Re-bind lucide for the close icon if needed
+            lucide.createIcons();
+        }
+
         // Cloud Configuration (GitHub)
         const GITHUB_CONFIG = {
             owner: "syedahsanzafar",
-            repo: "Haraz_Invoice",
+            repo: "Haraz_INVENTORY",
             path: "Haraz_inv_db.json",
             branch: "main"
         };
@@ -2723,6 +2860,54 @@
                 console.error("Cloud Error:", err);
                 if (!silent) showToast("Cloud Sync Failed: " + err.message);
                 setCloudStatus('offline', err.message || 'Sync Failed');
+            }
+        }
+
+        async function pushImageToCloud(fileName, base64Data) {
+            const token = localStorage.getItem('haraz_github_token');
+            if (!token) return;
+
+            const cleanBase64 = base64Data.split(',')[1];
+            const apiUrl = `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/product_images/${fileName}`;
+
+            try {
+                // 1. Check if file exists to get SHA (for overwriting)
+                const getRes = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                let sha = "";
+                if (getRes.ok) {
+                    const fileData = await getRes.json();
+                    sha = fileData.sha;
+                }
+
+                // 2. Upload / Overwrite the image
+                const putRes = await fetch(apiUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/vnd.github.v3+json'
+                    },
+                    body: JSON.stringify({
+                        message: `System Sync: Image Upload [${fileName}]`,
+                        content: cleanBase64,
+                        sha: sha,
+                        branch: GITHUB_CONFIG.branch
+                    })
+                });
+
+                if (putRes.ok) {
+                    console.log(`Cloud Image: ${fileName} uploaded successfully.`);
+                } else {
+                    console.error("GitHub Image Upload Failed");
+                }
+            } catch (err) {
+                console.error("Image Sync Error:", err);
             }
         }
 
