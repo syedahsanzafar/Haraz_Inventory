@@ -504,6 +504,103 @@
             color: white;
         }
 
+        /* Category Management UI */
+        .category-chip {
+            background: rgba(30, 30, 30, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .category-chip:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .category-name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #ffffff;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .category-action-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .category-action-btn:hover {
+            opacity: 1;
+        }
+
+        .category-action-btn.delete {
+            color: #ff5c5c;
+        }
+
+        .category-add-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .category-input-wrapper {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            padding: 4px;
+        }
+
+        .category-input-wrapper input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px 16px;
+            color: white;
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .category-add-container .btn-add {
+            background: #eab308;
+            /* Goldish yellow */
+            color: #1a1a1a;
+            font-weight: 700;
+            padding: 0 24px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .category-add-container .btn-add:hover {
+            background: #facc15;
+            transform: translateY(-1px);
+        }
+
         /* Stock Take View */
         .stock-take-grid {
             display: grid;
@@ -933,7 +1030,14 @@
             <div class="inventory-controls">
                 <div class="search-box">
                     <i data-lucide="search"></i>
-                    <input type="text" placeholder="Search items..." onkeyup="filterInventory(this.value)">
+                    <input type="text" placeholder="Search items..." onkeyup="filterInventory()">
+                </div>
+                <div class="form-group" style="margin-bottom: 0; min-width: 180px;">
+                    <select id="inventory-category-filter" onchange="filterInventory()"
+                        style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 12px; padding: 10px 16px;">
+                        <option value="all">All Categories</option>
+                        <!-- Populated dynamically -->
+                    </select>
                 </div>
                 <div style="display: flex; gap: 10px;">
                     <button class="btn btn-outline" onclick="openModal('categoryModal')">
@@ -1132,12 +1236,23 @@
                         <input type="text" id="new-item-supplier">
                     </div>
                     <div class="form-group">
-                        <label>Current Price ($)</label>
+                        <label>Current Price ($ / Unit)</label>
                         <input type="number" id="new-item-price" step="0.01">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Product Image (Home Only)</label>
+                    <label>Packing (Units per Box/Case)</label>
+                    <input type="number" id="new-item-pack-size" value="1" min="1"
+                        placeholder="e.g. 12 if sold in cases of 12">
+                </div>
+                <div class="form-group">
+                    <label>Image Filename (placed in product_images/ folder on GitHub)</label>
+                    <input type="text" id="new-item-image-path" placeholder="e.g. milk.jpg">
+                    <p style="font-size: 0.7rem; color: var(--text-dim); margin-top: 4px;">Use this for images to show
+                        on all devices.</p>
+                </div>
+                <div class="form-group">
+                    <label>Or Upload Locally (This Device Only)</label>
                     <div style="display: flex; gap: 1rem; align-items: start;">
                         <input type="file" id="new-item-image" accept="image/*" style="flex:1"
                             onchange="previewImage(this)">
@@ -1158,18 +1273,28 @@
 
     <!-- Modal for Category Management -->
     <div id="categoryModal" class="modal-overlay">
-        <div class="modal" style="max-width: 600px;">
-            <div class="modal-header">
-                <h2>Manage Categories</h2>
+        <div class="modal"
+            style="max-width: 780px; background: #0c0c0c; border: 1px solid rgba(255,255,255,0.05); padding: 2.5rem;">
+            <div class="modal-header" style="margin-bottom: 2rem;">
+                <h2
+                    style="font-size: 2.2rem; font-weight: 700; font-family: 'Outfit', sans-serif; letter-spacing: -0.5px;">
+                    Manage Categories</h2>
                 <button onclick="closeModal('categoryModal')"
-                    style="background:none; border:none; color:white; cursor:pointer;"><i data-lucide="x"></i></button>
+                    style="background:none; border:none; color:white; cursor:pointer; opacity: 0.6; transition: opacity 0.2s;">
+                    <i data-lucide="x" style="width: 32px; height: 32px;"></i>
+                </button>
             </div>
-            <div class="form-group" style="display: flex; gap: 10px; margin-bottom: 1.5rem; margin-top: 1rem;">
-                <input type="text" id="new-category-input" placeholder="New category name..." style="flex: 1;">
-                <button class="btn btn-primary" onclick="addCategory()">Add</button>
+
+            <div class="category-add-container">
+                <div class="category-input-wrapper">
+                    <input type="text" id="new-category-input" placeholder="New category name..."
+                        onkeypress="if(event.key === 'Enter') addCategory()">
+                </div>
+                <button class="btn-add" onclick="addCategory()">Add</button>
             </div>
+
             <div id="category-list"
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 400px; overflow-y: auto; padding-right: 5px;">
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-height: 500px; overflow-y: auto; padding-right: 8px;">
                 <!-- Categories will be injected here -->
             </div>
         </div>
@@ -1210,13 +1335,22 @@
             });
         };
 
-        const getImage = (id) => {
+        const getImage = (id, filename = null) => {
             return new Promise((resolve) => {
                 const tx = db.transaction(STORE_NAME, "readonly");
                 const store = tx.objectStore(STORE_NAME);
                 const request = store.get(id.toString());
-                request.onsuccess = () => resolve(request.result);
-                request.onerror = () => resolve(null);
+                request.onsuccess = () => {
+                    if (request.result) {
+                        resolve(request.result);
+                    } else if (filename) {
+                        // Fallback to GitHub Hosted Image
+                        resolve(`./product_images/${filename}`);
+                    } else {
+                        resolve(null);
+                    }
+                };
+                request.onerror = () => resolve(filename ? `./product_images/${filename}` : null);
             });
         };
 
@@ -1231,10 +1365,16 @@
 
         // Data State
         let inventory = JSON.parse(localStorage.getItem('haraz_inventory')) || [
-            { id: 1, name: 'Whole Milk', category: 'Dairy', stock: 24, unit: 'Liters', min: 10, supplier: 'Local Dairy', link: '', usageDays: 3, price: 1.50 },
-            { id: 2, name: 'Espresso Beans', category: 'Coffee Beans', stock: 12, unit: 'kg', min: 8, supplier: 'Global Roasters', link: '', usageDays: 7, price: 35.00 },
-            { id: 3, name: 'Sugar', category: 'Packaging', stock: 50, unit: 'kg', min: 20, supplier: 'Wholesale Mart', link: '', usageDays: 14, price: 1.20 }
+            { id: 1, name: 'Whole Milk', category: 'Dairy', stock: 24, unit: 'Liters', packSize: 12, min: 10, supplier: 'Local Dairy', link: '', usageDays: 3, price: 1.50 },
+            { id: 2, name: 'Espresso Beans', category: 'Coffee Beans', stock: 12, unit: 'kg', packSize: 5, min: 8, supplier: 'Global Roasters', link: '', usageDays: 7, price: 35.00 },
+            { id: 3, name: 'Sugar', category: 'Packaging', stock: 50, unit: 'kg', packSize: 20, min: 20, supplier: 'Wholesale Mart', link: '', usageDays: 14, price: 1.20 }
         ];
+
+        // Ensure every item has a category and packSize
+        inventory.forEach(item => {
+            if (!item.category) item.category = 'Uncategorized';
+            if (!item.packSize || item.packSize < 1) item.packSize = 1;
+        });
 
         let history = JSON.parse(localStorage.getItem('haraz_history')) || [
             { id: 101, date: '2026-01-10', item: 'Whole Milk', qty: 12, price: 1.50, supplier: 'Local Dairy' },
@@ -1259,6 +1399,7 @@
         // Initialization
         window.onload = async () => {
             await initDB();
+            syncCategories();
             lucide.createIcons();
             updateDashboard();
 
@@ -1276,6 +1417,7 @@
 
         // Utility: Save All Data
         function saveData(skipCloud = false) {
+            syncCategories();
             updateDashboard(); // Ensure calculated fields are up to date before saving
             localStorage.setItem('haraz_inventory', JSON.stringify(inventory));
             localStorage.setItem('haraz_history', JSON.stringify(history));
@@ -1285,6 +1427,26 @@
             // Auto-push to cloud with debounce
             if (!skipCloud) {
                 debouncePush();
+            }
+        }
+
+        // Feature: Automatically add categories from inventory items to master list
+        function syncCategories() {
+            if (!settings.categories) settings.categories = ['Dairy', 'Coffee Beans', 'Syrups', 'Packaging', 'Cleaning'];
+
+            const usedCategories = [...new Set(inventory.map(item => item.category).filter(c => c))];
+            let changed = false;
+
+            usedCategories.forEach(cat => {
+                if (!settings.categories.includes(cat)) {
+                    settings.categories.push(cat);
+                    changed = true;
+                }
+            });
+
+            if (changed) {
+                renderCategorySettings();
+                populateInventoryFilters();
             }
         }
 
@@ -1331,7 +1493,10 @@
                 document.getElementById('view-title').innerText = titles[sectionId];
             }
 
-            if (sectionId === 'inventory') renderInventory();
+            if (sectionId === 'inventory') {
+                renderInventory();
+                populateInventoryFilters();
+            }
             if (sectionId === 'stocktake') renderStockTake();
             if (sectionId === 'procurement') generateDraftOrders();
             if (sectionId === 'analytics') renderAnalytics();
@@ -1441,15 +1606,22 @@
         }
 
         // Inventory Functions
-        async function renderInventory(filterText = '') {
+        async function renderInventory() {
+            const filterText = document.querySelector('.search-box input').value.toLowerCase();
+            const filterCat = document.getElementById('inventory-category-filter') ? document.getElementById('inventory-category-filter').value : 'all';
+
             const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
 
-            const filteredItems = inventory.filter(i => i.name.toLowerCase().includes(filterText.toLowerCase()));
+            const filteredItems = inventory.filter(i => {
+                const matchesName = i.name.toLowerCase().includes(filterText);
+                const matchesCat = filterCat === 'all' || i.category === filterCat;
+                return matchesName && matchesCat;
+            });
 
             // Optimization: Fetch all images in parallel
             const itemsWithImages = await Promise.all(filteredItems.map(async (item) => {
-                const imgData = await getImage(item.id);
+                const imgData = await getImage(item.id, item.imagePath);
                 return { ...item, imgData };
             }));
 
@@ -1469,10 +1641,17 @@
                         <td>
                             <div class="counter">
                                 <button class="counter-btn" onclick="adjustStock('${item.id}', -1)">-</button>
-                                <input type="number" step="0.01" 
-                                    style="width: 60px; background: transparent; border: 1px solid var(--glass-border); color: white; text-align: center; font-weight: bold; border-radius: 4px;" 
-                                    value="${item.stock}" 
-                                    onchange="updateItemStock('${item.id}', this.value)">
+                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 80px;">
+                                    <input type="number" step="0.01" 
+                                        style="width: 100%; background: transparent; border: 1px solid var(--glass-border); color: white; text-align: center; font-weight: bold; border-radius: 4px; padding: 2px;" 
+                                        value="${item.stock}" 
+                                        onchange="updateItemStock('${item.id}', this.value)">
+                                    ${item.packSize > 1 ? `
+                                        <span style="font-size: 0.65rem; color: var(--text-dim); margin-top: 2px;">
+                                            ${Math.floor(item.stock / item.packSize)} Packs, ${(item.stock % item.packSize).toFixed(1)} Units
+                                        </span>
+                                    ` : ''}
+                                </div>
                                 <button class="counter-btn" onclick="adjustStock('${item.id}', 1)">+</button>
                             </div>
                         </td>
@@ -1505,7 +1684,7 @@
         }
 
         function adjustStock(id, amount) {
-            const item = inventory.find(i => i.id == id);
+            const item = inventory.find(i => String(i.id) === String(id));
             if (item) {
                 item.stock = parseFloat((item.stock + amount).toFixed(2));
                 if (item.stock < 0) item.stock = 0;
@@ -1515,7 +1694,7 @@
         }
 
         function updateItemStock(id, val) {
-            const item = inventory.find(i => i.id == id);
+            const item = inventory.find(i => String(i.id) === String(id));
             if (item) {
                 item.stock = parseFloat(parseFloat(val).toFixed(2)) || 0;
                 saveData();
@@ -1523,8 +1702,25 @@
             }
         }
 
-        function filterInventory(val) {
-            renderInventory(val);
+        function filterInventory() {
+            renderInventory();
+        }
+
+        function populateInventoryFilters() {
+            const filter = document.getElementById('inventory-category-filter');
+            if (!filter) return;
+
+            const currentVal = filter.value;
+            filter.innerHTML = '<option value="all">All Categories</option>';
+
+            settings.categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                filter.appendChild(opt);
+            });
+
+            filter.value = currentVal;
         }
 
         // Stock Take Functions
@@ -1535,25 +1731,72 @@
                 grid.innerHTML += `
                     <div class="stock-item-card">
                         <div style="display: flex; justify-content: space-between;">
-                            <h3>${item.name}</h3>
-                            <span style="color: var(--text-dim); font-size: 0.8rem;">Expect: ${item.stock}</span>
+                            <div>
+                                <h3 style="margin-bottom: 4px;">${item.name}</h3>
+                                <span class="badge badge-outline" style="font-size: 0.65rem; padding: 2px 6px; border: 1px solid var(--glass-border); color: var(--text-dim);">${item.category}</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="display: block; color: var(--text-dim); font-size: 0.8rem;">Expect: ${item.stock}</span>
+                                ${item.packSize > 1 ? `<span style="font-size: 0.65rem; color: var(--accent);">(${item.packSize} per Pack)</span>` : ''}
+                            </div>
                         </div>
-                        <input type="number" step="0.01" class="daily-input" data-id="${item.id}" placeholder="Enter Actual Qty">
+                        <div style="display: flex; gap: 8px;">
+                            ${item.packSize > 1 ? `
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Full Packs</label>
+                                    <input type="number" class="daily-input-packs" data-id="${item.id}" placeholder="Packs" style="width: 100%; font-size: 1.2rem; padding: 5px;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label style="font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Loose Units</label>
+                                    <input type="number" step="0.01" class="daily-input-units" data-id="${item.id}" placeholder="Units" style="width: 100%; font-size: 1.2rem; padding: 5px;">
+                                </div>
+                            ` : `
+                                <input type="number" step="0.01" class="daily-input" data-id="${item.id}" placeholder="Enter Actual Total Qty" style="width: 100%; font-size: 1.5rem; text-align: center;">
+                            `}
+                        </div>
                     </div>
                 `;
             });
         }
 
         function processStockTake() {
-            const inputs = document.querySelectorAll('.daily-input');
+            const inputsTotal = document.querySelectorAll('.daily-input');
+            const inputsPacks = document.querySelectorAll('.daily-input-packs');
+            const inputsUnits = document.querySelectorAll('.daily-input-units');
+
             let count = 0;
-            inputs.forEach(input => {
+
+            // Standard inputs
+            inputsTotal.forEach(input => {
                 const val = parseFloat(input.value);
                 if (!isNaN(val)) {
                     const id = input.dataset.id;
-                    const item = inventory.find(i => i.id == id);
+                    const item = inventory.find(i => String(i.id) === String(id));
                     if (item) {
                         item.stock = val;
+                        count++;
+                    }
+                }
+            });
+
+            // Dual inputs (Packs + Units)
+            const processedIds = new Set();
+            inputsPacks.forEach(input => {
+                const id = input.dataset.id;
+                processedIds.add(id);
+            });
+
+            processedIds.forEach(id => {
+                const packInput = [...inputsPacks].find(i => i.dataset.id === id);
+                const unitInput = [...inputsUnits].find(i => i.dataset.id === id);
+
+                const packVal = parseFloat(packInput.value) || 0;
+                const unitVal = parseFloat(unitInput.value) || 0;
+
+                if (packInput.value !== '' || unitInput.value !== '') {
+                    const item = inventory.find(i => String(i.id) === String(id));
+                    if (item) {
+                        item.stock = (packVal * item.packSize) + unitVal;
                         count++;
                     }
                 }
@@ -1584,19 +1827,25 @@
             }
 
             lowItems.forEach(item => {
-                const orderQty = Math.ceil(item.min * 2 - item.stock);
+                const neededQty = item.min * 2 - item.stock;
+                // Round up to the nearest pack size
+                const packsToOrder = Math.ceil(neededQty / item.packSize);
+                const orderQty = packsToOrder * item.packSize;
                 const totalCost = orderQty * item.price;
 
                 container.innerHTML += `
                     <div class="card animated">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                            <h3>${item.name}</h3>
+                            <div>
+                                <h3 style="margin-bottom: 4px;">${item.name}</h3>
+                                <span style="font-size: 0.75rem; color: var(--text-dim);">${item.category}</span>
+                            </div>
                             <span class="badge badge-danger">Restock</span>
                         </div>
                         <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 1rem;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Order Quantity:</span>
-                                <b>${orderQty} ${item.unit}</b>
+                                <span>Order Suggestion:</span>
+                                <b>${packsToOrder} ${packsToOrder > 1 ? 'Packs' : 'Pack'} (${orderQty} ${item.unit})</b>
                             </div>
                             <div style="display: flex; justify-content: space-between;">
                                 <span>Estimated Cost:</span>
@@ -1614,7 +1863,11 @@
         }
 
         function completePurchase(id, defaultQty, cost) {
-            const item = inventory.find(i => i.id == id);
+            const item = inventory.find(i => String(i.id) === String(id));
+            if (!item) {
+                alert("Error: Item not found.");
+                return;
+            }
 
             const userQty = prompt(`Enter quantity to order for ${item.name} (${item.unit}):`, defaultQty);
             if (userQty === null) return; // Cancelled
@@ -1648,11 +1901,15 @@
         }
 
         function receiveOrder(orderId) {
-            const orderIndex = orders.findIndex(o => o.id == orderId);
+            const orderIndex = orders.findIndex(o => String(o.id) === String(orderId));
             if (orderIndex === -1) return;
 
             const order = orders[orderIndex];
-            const item = inventory.find(i => i.id == order.itemId);
+            const item = inventory.find(i => String(i.id) === String(order.itemId));
+            if (!item && order.itemId) {
+                alert("Error: Associated inventory item not found.");
+                // We could still allow receiving it into history, but stock update would fail
+            }
 
             if (confirm(`Mark shipment for ${order.itemName} (${order.qty} ${order.unit}) as received? Stock will be updated.`)) {
                 if (item) {
@@ -1879,7 +2136,7 @@
                 (async () => {
                     // Optimized: Fetch all heatmap images in parallel
                     const itemsWithImages = await Promise.all(inventory.map(async (i) => {
-                        const imgData = await getImage(i.id);
+                        const imgData = await getImage(i.id, i.imagePath);
                         return { ...i, imgData };
                     }));
 
@@ -1924,35 +2181,64 @@
             if (!container) return;
             container.innerHTML = '';
 
+            // Ensure settings.categories is an array
+            if (!settings.categories || !Array.isArray(settings.categories)) {
+                settings.categories = ['Dairy', 'Coffee Beans', 'Syrups', 'Packaging', 'Cleaning'];
+            }
+
+            if (settings.categories.length === 0) {
+                container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-dim); padding: 2rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.1);">No categories yet. Add one above.</p>';
+                return;
+            }
+
             settings.categories.forEach(cat => {
                 const item = document.createElement('div');
-                item.style = "background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border);";
+                item.className = "category-chip";
                 item.innerHTML = `
-                    <span style="font-weight: 500;">${cat}</span>
-                    <div style="display: flex; gap: 5px;">
-                        <button class="btn btn-outline" style="padding: 4px; border-color: transparent;" onclick="editCategory('${cat}')">
-                            <i data-lucide="edit-2" style="width: 14px;"></i>
+                    <span class="category-name">${cat}</span>
+                    <div class="category-actions">
+                        <button class="category-action-btn" title="Edit" onclick="editCategory('${cat.replace(/'/g, "\\'")}')">
+                            <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
                         </button>
-                        <button class="btn btn-outline" style="padding: 4px; color: var(--danger); border-color: transparent;" onclick="deleteCategory('${cat}')">
-                            <i data-lucide="x" style="width: 14px;"></i>
+                        <button class="category-action-btn delete" title="Delete" onclick="deleteCategory('${cat.replace(/'/g, "\\'")}')">
+                            <i data-lucide="x" style="width: 20px; height: 20px;"></i>
                         </button>
                     </div>
                 `;
                 container.appendChild(item);
             });
-            lucide.createIcons();
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
         }
 
         function addCategory() {
             const input = document.getElementById('new-category-input');
+            if (!input) return;
+
             const val = input.value.trim();
-            if (val && !settings.categories.includes(val)) {
-                settings.categories.push(val);
-                input.value = '';
-                saveData();
-                renderCategorySettings();
-                showToast(`Category "${val}" added.`);
+            if (!val) return;
+
+            // Initialize if needed
+            if (!settings.categories || !Array.isArray(settings.categories)) {
+                settings.categories = [];
             }
+
+            if (settings.categories.includes(val)) {
+                alert(`Category "${val}" already exists.`);
+                return;
+            }
+
+            settings.categories.push(val);
+            input.value = '';
+
+            // Render first for immediate feedback
+            renderCategorySettings();
+
+            // Then save
+            saveData();
+            showToast(`Category "${val}" added.`);
         }
 
         function editCategory(oldCat) {
@@ -2031,7 +2317,12 @@
             }
 
             if (itemId) {
-                const item = inventory.find(i => i.id == itemId);
+                const item = inventory.find(i => String(i.id) === String(itemId));
+                if (!item) {
+                    alert("Error: Item not found.");
+                    closeModal(id);
+                    return;
+                }
                 document.getElementById('modal-title').innerText = "Edit Item";
                 document.getElementById('edit-item-id').value = item.id;
                 document.getElementById('new-item-name').value = item.name;
@@ -2043,8 +2334,10 @@
                 document.getElementById('new-item-supplier').value = item.supplier;
                 document.getElementById('new-item-price').value = item.price;
                 document.getElementById('new-item-link').value = item.link;
+                document.getElementById('new-item-pack-size').value = item.packSize || 1;
+                document.getElementById('new-item-image-path').value = item.imagePath || '';
 
-                const existingImg = await getImage(item.id);
+                const existingImg = await getImage(item.id, item.imagePath);
                 if (existingImg) {
                     document.getElementById('image-preview-container').innerHTML = `<img src="${existingImg}" style="width:100%; height:100%; object-fit:cover;">`;
                 }
@@ -2064,17 +2357,20 @@
         }
 
         async function deleteItem(id) {
-            const item = inventory.find(i => i.id == id);
+            // Find item by ID (handle both string and number)
+            const item = inventory.find(i => String(i.id) === String(id));
             if (!item) return;
 
             if (confirm(`Are you sure you want to delete "${item.name}"? This action cannot be undone.`)) {
-                const index = inventory.findIndex(i => i.id == id);
-                inventory.splice(index, 1);
-                await deleteImage(id); // Remove local image
-                saveData();
-                renderInventory();
-                updateDashboard();
-                showToast(`"${item.name}" has been deleted.`);
+                const index = inventory.findIndex(i => String(i.id) === String(id));
+                if (index !== -1) {
+                    inventory.splice(index, 1);
+                    await deleteImage(id); // Remove local image
+                    saveData();
+                    renderInventory();
+                    updateDashboard();
+                    showToast(`"${item.name}" has been deleted.`);
+                }
             }
         }
 
@@ -2117,9 +2413,26 @@
         document.getElementById('add-item-form').onsubmit = async function (e) {
             e.preventDefault();
             const editId = document.getElementById('edit-item-id').value;
+            const name = document.getElementById('new-item-name').value.trim();
+
+            if (!name) {
+                alert("Item name is required.");
+                return;
+            }
+
+            // Check for duplicate names (excluding current item if editing)
+            const isDuplicate = inventory.some(i =>
+                i.name.toLowerCase() === name.toLowerCase() &&
+                String(i.id) !== String(editId)
+            );
+
+            if (isDuplicate) {
+                alert(`An item with the name "${name}" already exists.`);
+                return;
+            }
 
             const itemData = {
-                name: document.getElementById('new-item-name').value,
+                name: name,
                 category: document.getElementById('new-item-category').value,
                 stock: parseFloat(document.getElementById('new-item-stock').value) || 0,
                 unit: document.getElementById('new-item-unit').value || '-',
@@ -2127,14 +2440,21 @@
                 usageDays: parseInt(document.getElementById('new-item-usage').value) || 0,
                 supplier: document.getElementById('new-item-supplier').value || '-',
                 price: parseFloat(document.getElementById('new-item-price').value) || 0,
+                packSize: parseInt(document.getElementById('new-item-pack-size').value) || 1,
+                imagePath: document.getElementById('new-item-image-path').value.trim() || '',
                 link: document.getElementById('new-item-link').value || ''
             };
 
             let finalId = editId;
             if (editId) {
-                const index = inventory.findIndex(i => i.id == editId);
-                inventory[index] = { ...inventory[index], ...itemData };
-                showToast("Item updated.");
+                const index = inventory.findIndex(i => String(i.id) === String(editId));
+                if (index !== -1) {
+                    inventory[index] = { ...inventory[index], ...itemData };
+                    showToast("Item updated.");
+                } else {
+                    alert("Error: Item not found.");
+                    return;
+                }
             } else {
                 finalId = Date.now().toString();
                 inventory.push({ id: finalId, ...itemData });
@@ -2147,7 +2467,7 @@
 
             saveData();
             closeModal('addItemModal');
-            renderInventory();
+            await renderInventory();
             currentProcessedImage = null;
         };
 

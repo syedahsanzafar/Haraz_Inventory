@@ -14,13 +14,13 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
     exit
 }
 
-Write-Host "Git is installed ✓" -ForegroundColor Green
+Write-Host "Git is installed" -ForegroundColor Green
 Write-Host ""
 
 # Get user input
 Write-Host "Please enter your GitHub repository details:" -ForegroundColor Yellow
-$username = Read-Host "GitHub Username"
-$reponame = Read-Host "Repository Name (e.g., haraz-inventory)"
+$username = Read-Host -Prompt "GitHub Username"
+$reponame = Read-Host -Prompt "Repository Name (e.g. haraz-inventory)"
 
 Write-Host ""
 Write-Host "Initializing Git repository..." -ForegroundColor Cyan
@@ -28,9 +28,10 @@ Write-Host "Initializing Git repository..." -ForegroundColor Cyan
 # Initialize git if not already initialized
 if (-not (Test-Path ".git")) {
     git init
-    Write-Host "Git repository initialized ✓" -ForegroundColor Green
-} else {
-    Write-Host "Git repository already exists ✓" -ForegroundColor Green
+    Write-Host "Git repository initialized" -ForegroundColor Green
+}
+else {
+    Write-Host "Git repository already exists" -ForegroundColor Green
 }
 
 # Add all files
@@ -39,7 +40,7 @@ git add .
 
 # Commit
 Write-Host "Creating initial commit..." -ForegroundColor Cyan
-git commit -m "Initial commit: Haraz Inventory PWA with delete functionality"
+git commit -m "Initial commit: Haraz Inventory PWA optimized"
 
 # Set main branch
 git branch -M main
@@ -71,4 +72,4 @@ Write-Host "4. Your site will be live at:" -ForegroundColor White
 Write-Host "   https://$username.github.io/$reponame/" -ForegroundColor Cyan
 Write-Host ""
 
-Read-Host "Press Enter to exit"
+Read-Host -Prompt "Press Enter to exit"
