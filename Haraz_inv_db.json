@@ -32,7 +32,7 @@
       "id": "102",
       "name": "1883 Maison Routin France Coconut Syrup",
       "category": "Syrups",
-      "stock": 0,
+      "stock": 10,
       "unit": "pcs",
       "min": 5,
       "usageDays": 7,
@@ -716,6 +716,15 @@
     }
   ],
   "history": [
+    {
+      "id": 1769103427675,
+      "date": "2026-01-22",
+      "receivedDate": "2026-01-22",
+      "item": "1883 Maison Routin France Coconut Syrup",
+      "qty": 10,
+      "price": 0,
+      "supplier": "-"
+    },
     {
       "id": 1769092293295,
       "date": "2026-01-22",
