@@ -74,7 +74,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 240px;
             background: rgba(18, 18, 18, 0.8);
             backdrop-filter: blur(20px);
             border-right: 1px solid var(--glass-border);
@@ -148,10 +148,9 @@
 
         /* Main Content */
         .main-content {
-            margin-left: 260px;
+            margin-left: 240px;
             flex: 1;
-            padding: 2rem;
-            max-width: 1400px;
+            padding: 1.25rem;
             width: 100%;
         }
 
@@ -602,45 +601,139 @@
         }
 
         /* Stock Take View */
-        .stock-take-grid {
+        .grid-5-cols {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        @media (max-width: 1100px) {
+            .grid-5-cols {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .grid-5-cols {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid-5-cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 450px) {
+            .grid-5-cols {
+                grid-template-columns: 1fr;
+            }
         }
 
         .stock-item-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            padding: 1.5rem;
-            border-radius: 20px;
+            padding: 10px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .stock-item-card:hover {
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.08);
         }
 
         .stock-item-card h3 {
-            font-size: 1.1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .daily-input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
             border: 1px solid var(--glass-border);
-            background: var(--glass-bg);
-            font-size: 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
+            font-size: 1rem;
             text-align: center;
-            font-weight: 700;
-            color: var(--secondary);
+            font-weight: 600;
+            color: white;
             outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .daily-input:focus {
+            border-color: var(--secondary);
         }
 
         /* Charts Section */
         .charts-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 1.5rem;
-            margin-top: 1.5rem;
+            margin-top: 0;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1100px) {
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Grid Class (Redundant but for safety) */
+        .grid-5-cols {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        @media (max-width: 1400px) {
+            .grid-5-cols {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .grid-5-cols {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .grid-5-cols {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stock-item-card {
+            padding: 1rem;
+        }
+
+        .stock-item-card h3 {
+            font-size: 0.95rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-small {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+            border-radius: 8px;
         }
 
         .heatmap-grid {
@@ -980,46 +1073,53 @@
                 </div>
             </div>
 
-            <div class="charts-grid">
-                <!-- 1. Inventory Health -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Inventory Health (Stock vs. Min)</h3>
-                    <canvas id="healthChart" height="250"></canvas>
-                </div>
-
-                <!-- 2. Items Requiring Reorder -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Items Requiring Reorder</h3>
-                    <canvas id="reorderChart" height="250"></canvas>
-                </div>
-
-                <!-- 3. Stock Distribution -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Category Distribution</h3>
-                    <div style="height: 250px; display: flex; justify-content: center;">
-                        <canvas id="categoryChart"></canvas>
+            <div class="dashboard-container">
+                <!-- Left Column: Priority Stock Alerts -->
+                <div class="dashboard-left">
+                    <div class="card" style="height: auto;">
+                        <h3 style="margin-bottom: 1rem;">Priority Stock Alerts</h3>
+                        <div id="dashboard-alerts" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Alerts will be injected here -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- 4. Supplier Reliance -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Supplier Reliance</h3>
-                    <canvas id="supplierChart" height="250"></canvas>
-                </div>
+                <!-- Right Column: Charts and Graphs -->
+                <div class="dashboard-right">
+                    <div class="charts-grid">
+                        <!-- 1. Inventory Health -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Inventory Health</h3>
+                            <canvas id="healthChart" height="250"></canvas>
+                        </div>
 
-                <!-- 5. Stock Level Heatmap -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Stock Status Heatmap</h3>
-                    <div id="stock-heatmap" class="heatmap-grid">
-                        <!-- Heatmap cells will be injected here -->
-                    </div>
-                </div>
+                        <!-- 2. Items Requiring Reorder -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Items Requiring Reorder</h3>
+                            <canvas id="reorderChart" height="250"></canvas>
+                        </div>
 
-                <!-- Stock Alerts (Keeping it as it's useful) -->
-                <div class="card">
-                    <h3 style="margin-bottom: 1rem;">Priority Stock Alerts</h3>
-                    <div id="dashboard-alerts" style="display: flex; flex-direction: column; gap: 1rem;">
-                        <!-- Alerts will be injected here -->
+                        <!-- 3. Stock Distribution -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Category Distribution</h3>
+                            <div style="height: 250px; display: flex; justify-content: center;">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 4. Supplier Reliance -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Supplier Reliance</h3>
+                            <canvas id="supplierChart" height="250"></canvas>
+                        </div>
+
+                        <!-- 5. Stock Level Heatmap -->
+                        <div class="card">
+                            <h3 style="margin-bottom: 1rem;">Stock Status Heatmap</h3>
+                            <div id="stock-heatmap" class="heatmap-grid">
+                                <!-- Heatmap cells will be injected here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1037,6 +1137,15 @@
                         style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 12px; padding: 10px 16px;">
                         <option value="all">All Categories</option>
                         <!-- Populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 0; min-width: 160px;">
+                    <select id="inventory-sort" onchange="filterInventory()"
+                        style="background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; border-radius: 12px; padding: 10px 16px;">
+                        <option value="min" selected>Sort by Min Qty</option>
+                        <option value="name">Sort by AtoZ</option>
+                        <option value="id">Sort by ID</option>
+                        <option value="category">Sort by Category</option>
                     </select>
                 </div>
                 <div style="display: flex; gap: 10px;">
@@ -1087,7 +1196,7 @@
                 </div>
             </div>
 
-            <div class="stock-take-grid" id="stock-take-grid">
+            <div class="grid-5-cols" id="stock-take-grid">
                 <!-- Stock take items will be injected here -->
             </div>
         </div>
@@ -1101,16 +1210,14 @@
                 </button>
             </div>
 
-            <div id="draft-orders-container"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div id="draft-orders-container" class="grid-5-cols" style="margin-bottom: 2rem;">
                 <!-- Draft orders will be injected here -->
             </div>
 
             <div class="inventory-controls" id="pending-orders-header">
                 <h2>Pending Deliveries</h2>
             </div>
-            <div id="pending-orders-container"
-                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 1.5rem;">
+            <div id="pending-orders-container" class="grid-5-cols">
                 <!-- Pending orders will be injected here -->
             </div>
         </div>
@@ -1406,10 +1513,10 @@
             // Check initial online status
             if (!navigator.onLine) {
                 setCloudStatus('offline', 'No Internet');
+            } else {
+                // Auto-sync on load - proceed in background
+                pullFromCloud(true);
             }
-
-            // Auto-sync on load
-            await pullFromCloud(true); // true means silent pull without confirmation
         };
 
         window.addEventListener('online', () => pullFromCloud(true));
@@ -1609,14 +1716,29 @@
         async function renderInventory() {
             const filterText = document.querySelector('.search-box input').value.toLowerCase();
             const filterCat = document.getElementById('inventory-category-filter') ? document.getElementById('inventory-category-filter').value : 'all';
+            const sortBy = document.getElementById('inventory-sort') ? document.getElementById('inventory-sort').value : 'min';
 
             const tbody = document.getElementById('inventory-table-body');
             tbody.innerHTML = '';
 
-            const filteredItems = inventory.filter(i => {
+            let filteredItems = inventory.filter(i => {
                 const matchesName = i.name.toLowerCase().includes(filterText);
                 const matchesCat = filterCat === 'all' || i.category === filterCat;
                 return matchesName && matchesCat;
+            });
+
+            // Sort logic
+            filteredItems.sort((a, b) => {
+                if (sortBy === 'name') {
+                    return a.name.localeCompare(b.name);
+                } else if (sortBy === 'id') {
+                    return a.id - b.id;
+                } else if (sortBy === 'min') {
+                    return (a.min || 0) - (b.min || 0);
+                } else if (sortBy === 'category') {
+                    return (a.category || '').localeCompare(b.category || '');
+                }
+                return 0;
             });
 
             // Optimization: Fetch all images in parallel
@@ -1724,39 +1846,54 @@
         }
 
         // Stock Take Functions
-        function renderStockTake() {
+        async function renderStockTake() {
             const grid = document.getElementById('stock-take-grid');
             grid.innerHTML = '';
-            inventory.forEach(item => {
+
+            // Optimization: Fetch all images in parallel
+            const itemsWithImages = await Promise.all(inventory.map(async (item) => {
+                const imgData = await getImage(item.id, item.imagePath);
+                return { ...item, imgData };
+            }));
+
+            itemsWithImages.forEach(item => {
                 grid.innerHTML += `
-                    <div class="stock-item-card">
-                        <div style="display: flex; justify-content: space-between;">
-                            <div>
-                                <h3 style="margin-bottom: 4px;">${item.name}</h3>
-                                <span class="badge badge-outline" style="font-size: 0.65rem; padding: 2px 6px; border: 1px solid var(--glass-border); color: var(--text-dim);">${item.category}</span>
+                    <div class="stock-item-card animated" style="min-width: 0;">
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
+                                ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 12px; color: var(--text-dim);"></i>'}
                             </div>
-                            <div style="text-align: right;">
-                                <span style="display: block; color: var(--text-dim); font-size: 0.8rem;">Expect: ${item.stock}</span>
-                                ${item.packSize > 1 ? `<span style="font-size: 0.65rem; color: var(--accent);">(${item.packSize} per Pack)</span>` : ''}
+                            <div style="overflow: hidden; flex: 1;">
+                                <h3 title="${item.name}" style="margin: 0; font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</h3>
+                                <span style="font-size: 0.6rem; color: var(--text-dim); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.category}</span>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 8px;">
+
+                        <div style="background: rgba(0,0,0,0.2); padding: 6px 10px; border-radius: 8px; font-size: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span style="color: var(--text-dim);">Exp:</span>
+                                <b style="color: var(--secondary);">${item.stock} ${item.unit}</b>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 4px;">
                             ${item.packSize > 1 ? `
                                 <div style="flex: 1;">
-                                    <label style="font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Full Packs</label>
-                                    <input type="number" class="daily-input-packs" data-id="${item.id}" placeholder="Packs" style="width: 100%; font-size: 1.2rem; padding: 5px;">
+                                    <input type="number" class="daily-input-packs" data-id="${item.id}" placeholder="Pks" title="Full Packs" style="width: 100%; font-size: 0.85rem; padding: 5px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border); border-radius: 6px; outline: none;">
                                 </div>
                                 <div style="flex: 1;">
-                                    <label style="font-size: 0.6rem; color: var(--text-dim); display: block; margin-bottom: 4px;">Loose Units</label>
-                                    <input type="number" step="0.01" class="daily-input-units" data-id="${item.id}" placeholder="Units" style="width: 100%; font-size: 1.2rem; padding: 5px;">
+                                    <input type="number" step="0.01" class="daily-input-units" data-id="${item.id}" placeholder="Unt" title="Loose Units" style="width: 100%; font-size: 0.85rem; padding: 5px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border); border-radius: 6px; outline: none;">
                                 </div>
                             ` : `
-                                <input type="number" step="0.01" class="daily-input" data-id="${item.id}" placeholder="Enter Actual Total Qty" style="width: 100%; font-size: 1.5rem; text-align: center;">
+                                <input type="number" step="0.01" class="daily-input" data-id="${item.id}" placeholder="Enter Qty" style="width: 100%; font-size: 0.85rem; padding: 5px; background: rgba(0,0,0,0.2); color: white; border: 1px solid var(--glass-border); border-radius: 6px; text-align: center; outline: none;">
                             `}
                         </div>
+                        
+                        <button class="btn btn-primary btn-small" style="width: 100%; margin-top: 2px; padding: 6px; font-size: 0.75rem;" onclick="processStockTake()">Save Audit</button>
                     </div>
                 `;
             });
+            if (window.lucide) lucide.createIcons();
         }
 
         function processStockTake() {
@@ -1812,7 +1949,7 @@
         }
 
         // Procurement Functions
-        function generateDraftOrders() {
+        async function generateDraftOrders() {
             const container = document.getElementById('draft-orders-container');
             container.innerHTML = '';
 
@@ -1826,7 +1963,13 @@
                 return;
             }
 
-            lowItems.forEach(item => {
+            // Optimization: Fetch all images in parallel
+            const itemsWithImages = await Promise.all(lowItems.map(async (item) => {
+                const imgData = await getImage(item.id, item.imagePath);
+                return { ...item, imgData };
+            }));
+
+            itemsWithImages.forEach(item => {
                 const neededQty = item.min * 2 - item.stock;
                 // Round up to the nearest pack size
                 const packsToOrder = Math.ceil(neededQty / item.packSize);
@@ -1834,32 +1977,35 @@
                 const totalCost = orderQty * item.price;
 
                 container.innerHTML += `
-                    <div class="card animated">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                            <div>
-                                <h3 style="margin-bottom: 4px;">${item.name}</h3>
-                                <span style="font-size: 0.75rem; color: var(--text-dim);">${item.category}</span>
+                    <div class="card animated" style="padding: 10px; min-width: 0;">
+                        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
+                                ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 12px; color: var(--text-dim);"></i>'}
                             </div>
-                            <span class="badge badge-danger">Restock</span>
+                            <div style="overflow: hidden; flex: 1;">
+                                <h3 style="font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;" title="${item.name}">${item.name}</h3>
+                                <span style="font-size: 0.6rem; color: var(--text-dim); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.category}</span>
+                            </div>
                         </div>
-                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <span>Order Suggestion:</span>
-                                <b>${packsToOrder} ${packsToOrder > 1 ? 'Packs' : 'Pack'} (${orderQty} ${item.unit})</b>
+                        <div style="background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                <span>Order:</span>
+                                <b>${packsToOrder} Pks</b>
                             </div>
                             <div style="display: flex; justify-content: space-between;">
-                                <span>Estimated Cost:</span>
-                                <b style="color: var(--secondary);">$ ${totalCost.toFixed(2)}</b>
+                                <span>Cost:</span>
+                                <b style="color: var(--secondary);">$${totalCost.toFixed(2)}</b>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 8px;">
-                            <button class="btn btn-primary" style="flex: 1;" onclick="completePurchase(${item.id}, ${orderQty}, ${totalCost})">Have Placed Order</button>
-                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-outline"><i data-lucide="external-link"></i></a>` : ''}
+                        <div style="display: flex; gap: 4px;">
+                            <button class="btn btn-primary btn-small" style="flex: 1; padding: 6px; font-size: 0.75rem;" onclick="completePurchase(${item.id}, ${orderQty}, ${totalCost})">Order</button>
+                            ${item.link ? `<a href="${item.link}" target="_blank" class="btn btn-outline btn-small" style="padding: 6px;"><i data-lucide="external-link" style="width: 12px; height: 12px;"></i></a>` : ''}
                         </div>
                     </div>
                 `;
             });
             lucide.createIcons();
+            renderPendingOrders();
         }
 
         function completePurchase(id, defaultQty, cost) {
@@ -1936,7 +2082,7 @@
             }
         }
 
-        function renderPendingOrders() {
+        async function renderPendingOrders() {
             const container = document.getElementById('pending-orders-container');
             if (!container) return;
             container.innerHTML = '';
@@ -1946,29 +2092,40 @@
                 return;
             }
 
-            orders.forEach(order => {
+            // Optimization: Fetch all images in parallel
+            const ordersWithImages = await Promise.all(orders.map(async (order) => {
+                const item = inventory.find(i => String(i.id) === String(order.itemId));
+                let imgData = null;
+                if (item) {
+                    imgData = await getImage(item.id, item.imagePath);
+                }
+                return { ...order, imgData };
+            }));
+
+            ordersWithImages.forEach(order => {
                 container.innerHTML += `
-                    <div class="card animated" style="border-left: 4px solid var(--warning); height: auto;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-                            <h3 style="font-size: 1.1rem;">In Transit: ${order.itemName}</h3>
-                            <span class="badge badge-warning">Pending</span>
-                        </div>
-                        <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; margin-bottom: 1rem;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem;">
-                                <span>Ordered On:</span>
-                                <b>${order.date}</b>
+                    <div class="card animated" style="border-left: 4px solid var(--warning); padding: 10px; min-width: 0;">
+                        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 0.75rem;">
+                            <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
+                                ${order.imgData ? `<img src="${order.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 12px; color: var(--text-dim);"></i>'}
                             </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px; font-size: 0.85rem;">
-                                <span>Quantity:</span>
+                            <div style="overflow: hidden; flex: 1;">
+                                <h3 style="font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 0;" title="${order.itemName}">${order.itemName}</h3>
+                                <span style="font-size: 0.6rem; color: var(--text-dim); display: block;">Ordered: ${order.date}</span>
+                            </div>
+                        </div>
+                        <div style="background: rgba(0,0,0,0.2); padding: 8px 10px; border-radius: 8px; margin-bottom: 0.75rem; font-size: 0.75rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                                <span>Qty:</span>
                                 <b>${order.qty} ${order.unit}</b>
                             </div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
-                                <span>Supplier:</span>
-                                <b>${order.supplier}</b>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span>From:</span>
+                                <b style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${order.supplier}</b>
                             </div>
                         </div>
-                        <button class="btn btn-primary" style="width: 100%; background: linear-gradient(135deg, var(--success), #00c853);" onclick="receiveOrder(${order.id})">
-                            <i data-lucide="package-check" style="width: 18px;"></i> Mark as Received
+                        <button class="btn btn-primary btn-small" style="width: 100%; padding: 6px; font-size: 0.75rem; background: linear-gradient(135deg, var(--success), #00c853);" onclick="receiveOrder(${order.id})">
+                            <i data-lucide="package-check" style="width: 12px;"></i> Receive
                         </button>
                     </div>
                 `;
@@ -2056,7 +2213,14 @@
             // 2. Items Requiring Reorder (Horizontal Bar)
             const reorderCtx = document.getElementById('reorderChart');
             if (reorderCtx) {
-                const reorderItems = inventory.filter(i => i.stock <= i.min).sort((a, b) => (a.stock / a.min) - (b.stock / b.min));
+                //	const reorderItems = inventory.filter(i => i.stock <= i.min).sort((a, b) => (a.stock / a.min) - (b.stock / b.min));
+                //	const reorderitems = inventory.sort((a, b) => a.stock - b.stock);
+                //	const reorderitems = inventory.sort((a, b) => a.stock - b.stock);
+                //	const reorderitems = inventory.sort((a, b) => a.supplier.localeCompare(b.supplier));
+                const reorderItems = inventory
+                    .filter(i => i.stock <= i.min)
+                    .sort((a, b) => (a.stock / (a.min || 1)) - (b.stock / (b.min || 1)));
+
                 const labels = reorderItems.map(i => i.name).slice(0, 8);
                 const data = reorderItems.map(i => i.stock).slice(0, 8);
 
