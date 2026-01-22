@@ -1778,9 +1778,10 @@
             const container = document.getElementById('dashboard-alerts');
             container.innerHTML = '';
 
+            let html = '';
             inventory.forEach(i => {
                 if (i.stock <= i.min) {
-                    container.innerHTML += `
+                    html += `
                         <div style="background: rgba(255, 77, 77, 0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 77, 77, 0.2); display: flex; align-items: center; gap: 10px;">
                             <i data-lucide="alert-circle" style="color: var(--danger); width: 18px;"></i>
                             <div style="flex:1">
@@ -1794,7 +1795,7 @@
                     const consumptionPerDay = i.min / i.usageDays;
                     const daysRemaining = Math.floor(i.stock / (consumptionPerDay || 1));
                     if (daysRemaining <= 3) {
-                        container.innerHTML += `
+                        html += `
                             <div style="background: rgba(255, 171, 0, 0.05); padding: 12px; border-radius: 12px; border: 1px solid rgba(255, 171, 0, 0.2); display: flex; align-items: center; gap: 10px;">
                                 <i data-lucide="clock" style="color: var(--warning); width: 18px;"></i>
                                 <div style="flex:1">
@@ -1806,6 +1807,7 @@
                     }
                 }
             });
+            container.innerHTML = html;
             lucide.createIcons();
         }
 
@@ -1859,20 +1861,16 @@
                         <td style="font-weight: 600;">${item.name}</td>
                         <td style="color: var(--text-dim);">${item.category}</td>
                         <td>
-                            <div class="counter">
-                                <button class="counter-btn" onclick="adjustStock('${item.id}', -1)">-</button>
-                                <div style="display: flex; flex-direction: column; align-items: center; min-width: 80px;">
-                                    <input type="number" step="0.01" 
-                                        style="width: 100%; background: transparent; border: 1px solid var(--glass-border); color: white; text-align: center; font-weight: bold; border-radius: 4px; padding: 2px;" 
-                                        value="${item.stock}" 
-                                        onchange="updateItemStock('${item.id}', this.value)">
-                                    ${item.packSize > 1 ? `
-                                        <span style="font-size: 0.65rem; color: var(--text-dim); margin-top: 2px;">
-                                            ${Math.floor(item.stock / item.packSize)} Packs, ${(item.stock % item.packSize).toFixed(1)} Units
-                                        </span>
-                                    ` : ''}
-                                </div>
-                                <button class="counter-btn" onclick="adjustStock('${item.id}', 1)">+</button>
+                            <div style="display: flex; flex-direction: column; align-items: center; min-width: 80px;">
+                                <input type="number" step="0.01" 
+                                    style="width: 100%; background: transparent; border: 1px solid var(--glass-border); color: white; text-align: center; font-weight: bold; border-radius: 4px; padding: 2px;" 
+                                    value="${item.stock}" 
+                                    onchange="updateItemStock('${item.id}', this.value)">
+                                ${item.packSize > 1 ? `
+                                    <span style="font-size: 0.65rem; color: var(--text-dim); margin-top: 2px;">
+                                        ${Math.floor(item.stock / item.packSize)} Packs, ${(item.stock % item.packSize).toFixed(1)} Units
+                                    </span>
+                                ` : ''}
                             </div>
                         </td>
                         <td>${item.unit}</td>
@@ -1964,8 +1962,9 @@
                 return { ...item, imgData };
             }));
 
+            let html = '';
             itemsWithImages.forEach(item => {
-                grid.innerHTML += `
+                html += `
                     <div class="stock-item-card animated" style="min-width: 0;">
                         <div style="display: flex; gap: 8px; align-items: center;">
                             <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
@@ -2001,6 +2000,7 @@
                     </div>
                 `;
             });
+            grid.innerHTML = html;
             if (window.lucide) lucide.createIcons();
         }
 
@@ -2087,6 +2087,7 @@
                 return { ...item, imgData };
             }));
 
+            let html = '';
             itemsWithImages.forEach(item => {
                 const neededQty = item.min * 2 - item.stock;
                 // Round up to the nearest pack size
@@ -2094,7 +2095,7 @@
                 const orderQty = packsToOrder * item.packSize;
                 const totalCost = orderQty * item.price;
 
-                container.innerHTML += `
+                html += `
                     <div class="card animated" style="padding: 10px; min-width: 0;">
                         <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 0.75rem;">
                             <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
@@ -2122,6 +2123,7 @@
                     </div>
                 `;
             });
+            container.innerHTML = html;
             lucide.createIcons();
             renderPendingOrders();
         }
@@ -2220,8 +2222,9 @@
                 return { ...order, imgData };
             }));
 
+            let html = '';
             ordersWithImages.forEach(order => {
-                container.innerHTML += `
+                html += `
                     <div class="card animated" style="border-left: 4px solid var(--warning); padding: 10px; min-width: 0;">
                         <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 0.75rem;">
                             <div style="width: 32px; height: 32px; background: var(--glass-bg); border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); flex-shrink: 0;">
@@ -2248,6 +2251,7 @@
                     </div>
                 `;
             });
+            container.innerHTML = html;
             lucide.createIcons();
         }
 
@@ -2263,8 +2267,9 @@
             const tbody = document.getElementById('purchase-history-body');
             tbody.innerHTML = '';
 
+            let html = '';
             history.slice(0, 10).forEach(h => {
-                tbody.innerHTML += `
+                html += `
                     <tr>
                         <td>${h.date}</td>
                         <td style="font-weight: 600;">${h.item}</td>
@@ -2279,6 +2284,7 @@
                     </tr>
                 `;
             });
+            tbody.innerHTML = html;
             lucide.createIcons();
         }
 
