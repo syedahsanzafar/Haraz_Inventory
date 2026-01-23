@@ -82,7 +82,9 @@
       "usageDays": 20,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Haraz Insulated Hot Cup 8oz.png"
     },
     {
       "id": 1768936520245,
