@@ -244,7 +244,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "1883 Maison Routin France Blackberry Syrup.png"
     },
     {
       "id": 1768938142826,
