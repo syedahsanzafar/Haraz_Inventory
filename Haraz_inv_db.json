@@ -504,7 +504,7 @@
       "price": 0,
       "link": "",
       "packSize": 1,
-      "imagePath": "paper bags.png"
+      "imagePath": "Paper Bags.png"
     },
     {
       "id": 1768940578031,
@@ -516,7 +516,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Handle Shopping Bags medium 41x27.png"
     },
     {
       "id": 1768940644263,
