@@ -36,7 +36,9 @@
       "usageDays": 7,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Haraz Insulated Cups 12oz.png"
     },
     {
       "id": 1768935851547,
@@ -216,7 +218,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "1883 Maison Routin France Hazelnut Syrup.png"
     },
     {
       "id": 1768937889967,
