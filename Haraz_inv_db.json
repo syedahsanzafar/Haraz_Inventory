@@ -554,7 +554,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "4 Piece Cuttlery Set.png"
     },
     {
       "id": 1768940875356,
