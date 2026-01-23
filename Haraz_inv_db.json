@@ -584,7 +584,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "3LB Carrier + Bag + Dispenser.png"
     },
     {
       "id": 1768941974110,
