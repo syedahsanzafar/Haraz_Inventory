@@ -50,7 +50,7 @@
     },
     {
       "id": 1768936046284,
-      "name": "Paper Cup Holder",
+      "name": "Paper Cup Holder ",
       "category": "Packaging",
       "stock": 1,
       "unit": "boxes",
@@ -58,9 +58,7 @@
       "usageDays": 20,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": "",
-      "packSize": 1,
-      "imagePath": "Paper Cup Holder.png"
+      "link": ""
     },
     {
       "id": 1768936101732,
@@ -84,9 +82,7 @@
       "usageDays": 20,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": "",
-      "packSize": 1,
-      "imagePath": "Haraz Insulated Hot Cup 8oz.png"
+      "link": ""
     },
     {
       "id": 1768936520245,
@@ -158,9 +154,7 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": "",
-      "packSize": 1,
-      "imagePath": "Hollander White Chocolate sauce.png"
+      "link": ""
     },
     {
       "id": 1768937646004,
@@ -292,7 +286,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Chobani Oatmilk.png"
     },
     {
       "id": 1768938544804,
