@@ -424,7 +424,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Karat Knives.png"
     },
     {
       "id": 1768939005964,
