@@ -152,7 +152,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Hollander Dutched Caramel cafe sauce.png"
     },
     {
       "id": 1768937453573,
@@ -398,7 +400,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Karat Forks.png"
     },
     {
       "id": 1768938955031,
