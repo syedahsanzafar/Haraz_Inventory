@@ -56,7 +56,7 @@
     },
     {
       "id": 1768936046284,
-      "name": "Paper Cup Holder ",
+      "name": "Paper Cup Holder",
       "category": "Packaging",
       "stock": 1,
       "unit": "boxes",
@@ -64,7 +64,9 @@
       "usageDays": 20,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Paper Cup Holder.png"
     },
     {
       "id": 1768936101732,
