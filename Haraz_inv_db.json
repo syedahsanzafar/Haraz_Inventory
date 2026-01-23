@@ -596,7 +596,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Pet Hinged Container.png"
     },
     {
       "id": 1768942010477,
