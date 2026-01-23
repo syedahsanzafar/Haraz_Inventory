@@ -22,7 +22,9 @@
       "usageDays": 7,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Black Lids 10-24oz Cup.png"
     },
     {
       "id": 1768935788699,
