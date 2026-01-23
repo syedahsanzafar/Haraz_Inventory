@@ -476,7 +476,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Haraz Pet Plate 9x6.png"
     },
     {
       "id": 1768939424942,
