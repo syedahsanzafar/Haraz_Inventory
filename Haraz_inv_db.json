@@ -550,7 +550,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Haraz Honey Comb Bread Paper Box.png"
     },
     {
       "id": 1768941127502,
