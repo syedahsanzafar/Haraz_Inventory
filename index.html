@@ -364,7 +364,7 @@
         }
 
         td {
-            padding: 1.25rem 1rem;
+            padding: 0.625rem 1rem;
             border-bottom: 1px solid var(--glass-border);
             vertical-align: middle;
         }
@@ -1574,10 +1574,11 @@
             { id: 3, name: 'Sugar', category: 'Packaging', stock: 50, unit: 'kg', packSize: 20, min: 20, supplier: 'Wholesale Mart', link: '', usageDays: 14, price: 1.20 }
         ];
 
-        // Ensure every item has a category and packSize
+        // Ensure every item has a category, packSize, and default imagePath
         inventory.forEach(item => {
             if (!item.category) item.category = 'Uncategorized';
             if (!item.packSize || item.packSize < 1) item.packSize = 1;
+            if (!item.imagePath) item.imagePath = item.name + ".png";
         });
 
         let history = JSON.parse(localStorage.getItem('haraz_history')) || [
@@ -1853,9 +1854,9 @@
                 tr.id = `item-row-${item.id}`;
                 tr.innerHTML = `
                         <td>
-                            <div class="img-cell" style="width: 40px; height: 40px; background: var(--glass-bg); border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border);" 
+                            <div class="img-cell" style="width: 72px; height: 72px; background: var(--glass-bg); border-radius: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px solid var(--glass-border); padding: 2px;" 
                                  onclick="openImagePreview('${item.imgData || ''}', '${item.name}')">
-                                ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i data-lucide="image" style="width: 16px; color: var(--text-dim);"></i>'}
+                                ${item.imgData ? `<img src="${item.imgData}" style="width: 100%; height: 100%; object-fit: contain;">` : '<i data-lucide="image" style="width: 22px; color: var(--text-dim);"></i>'}
                             </div>
                         </td>
                         <td style="font-weight: 600;">${item.name}</td>
@@ -2634,6 +2635,21 @@
                 document.getElementById('add-item-form').reset();
                 document.getElementById('edit-item-id').value = '';
             }
+
+            // Auto-generate Image Filename from Item Name
+            const nameInput = document.getElementById('new-item-name');
+            const pathInput = document.getElementById('new-item-image-path');
+
+            const updateFilename = () => {
+                if (nameInput.value.trim()) {
+                    pathInput.value = nameInput.value.trim() + ".png";
+                } else {
+                    pathInput.value = "";
+                }
+            };
+
+            // Remove previous listener if any to avoid multiple attachments
+            nameInput.oninput = updateFilename;
         }
 
         function closeModal(id) {
@@ -2733,10 +2749,9 @@
                 link: document.getElementById('new-item-link').value || ''
             };
 
-            // If a new image was just captured/selected, auto-generate filename
+            // If a new image was just captured/selected, use the default name pattern
             if (currentProcessedImage) {
-                const safeName = name.replace(/[^a-z0-9_\-]/gi, '_').toLowerCase();
-                itemData.imagePath = `${safeName}.jpg`;
+                itemData.imagePath = name + ".png";
             }
 
             let finalId = editId;
