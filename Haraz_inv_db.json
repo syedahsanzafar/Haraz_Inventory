@@ -136,7 +136,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Hollander Classic Chocolate Cafe sauce.png"
     },
     {
       "id": 1768937353191,
