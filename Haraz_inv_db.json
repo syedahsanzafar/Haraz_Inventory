@@ -476,7 +476,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Clear Pet Container 6x6.png"
     },
     {
       "id": 1768940129204,
