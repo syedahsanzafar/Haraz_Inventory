@@ -542,7 +542,9 @@
       "usageDays": 0,
       "supplier": "-",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Plastic Sauce Cup 1.5 oz.png"
     },
     {
       "id": 1768940979653,
