@@ -72,7 +72,9 @@
       "usageDays": 15,
       "supplier": "Haraz Online Store",
       "price": 0,
-      "link": ""
+      "link": "",
+      "packSize": 1,
+      "imagePath": "Black 8oz Lids.png"
     },
     {
       "id": 1768936150899,
