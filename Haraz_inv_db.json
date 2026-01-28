@@ -697,5 +697,17 @@
       "Cleaning"
     ]
   },
-  "orders": []
+  "orders": [
+    {
+      "id": 1769572399925,
+      "date": "2026-01-28",
+      "itemId": 1768936046284,
+      "itemName": "Paper Cup Holder",
+      "qty": 10,
+      "price": 0,
+      "cost": 0,
+      "unit": "boxes",
+      "supplier": "Haraz Online Store"
+    }
+  ]
 }
